@@ -28,9 +28,6 @@ config:
       password: '${DATABASE_CONTAINER_PASSWORD}'
     security:
       oauth2:
-        resourceserver:
-          jwt:
-            jwk-set-uri: "https://www.dsb.no"
         client:
           provider:
             keycloak-service-account:
@@ -44,16 +41,14 @@ config:
               client-secret: not_used
               authorization-grant-type: client_credentials
   frontend-config:
-    keycloak-config:
-      realm: example
-      url: "https://www.dsb.no"
+    auth-config:
+      authority: "https://tommytesterexternalid.ciamlogin.com/"
       clientId: example-application-frontend
-      logoutRedirectUri: "https://www.dsb.no"
   testapp:
     self-uri: "http://localhost:8080"
     svc-account-client-registration-id: "service-account-test-application"
     jwk-set-uri:
-      example: "https://www.dsb.no"
+      azure: https://tommytesterexternalid.ciamlogin.com/8d185478-fca9-4383-a90f-659b6284392a/discovery/v2.0/keys
       ServiceAccount: "https://www.dsb.no"
 
 rbac:

@@ -15,7 +15,6 @@ Full manifest should match snapshot:
       annotations:
         key1: value1
         key2: value2
-        orgs.k8s.snyk.io/v1: 3c6b0e2e-36a2-4c0e-93c8-3ba8c87dd75d
       name: RELEASE-NAME
       namespace: NAMESPACE
     spec:
@@ -31,7 +30,7 @@ Full manifest should match snapshot:
             metadata:
               annotations:
                 apparmor.security.beta.kubernetes.io/pod: runtime/default
-                checksum: chart-version=2.2.0_config-hash=3b6fa61f25ca20dbd2847b678e0aad03340abe87a6dc8c2f4d8ee7ffeb17e12b
+                checksum: chart-version=2.3.0_config-hash=6b7ad9a44d76ff1553b3dfe5a21db4739baf2e3bdeeb631cd8b2e335e29a6a33
                 co.elastic.logs/json.add_error_key: "true"
                 co.elastic.logs/json.keys_under_root: "true"
                 co.elastic.logs/json.overwrite_keys: "true"
@@ -208,7 +207,7 @@ Full manifest should match snapshot:
       template:
         metadata:
           annotations:
-            checksum: chart-version=2.2.0_config-hash=a10e0406b7dd56070480f3fce25894bf470a96e4d4f955a03197588f571fb0e5
+            checksum: chart-version=2.3.0_config-hash=c5555fc2f2353d90c61b0acd1305850d9ddcb2db7165ffd137ad82a910433516
           labels:
             app: RELEASE-NAME-db-app
         spec:
@@ -250,8 +249,6 @@ Minimal manifest should match snapshot:
     apiVersion: batch/v1
     kind: CronJob
     metadata:
-      annotations:
-        orgs.k8s.snyk.io/v1: 3c6b0e2e-36a2-4c0e-93c8-3ba8c87dd75d
       name: RELEASE-NAME
       namespace: NAMESPACE
     spec:
@@ -267,7 +264,7 @@ Minimal manifest should match snapshot:
             metadata:
               annotations:
                 apparmor.security.beta.kubernetes.io/pod: runtime/default
-                checksum: chart-version=2.2.0_config-hash=da33a9b41ff7cb185730d788b1bd9d5eb8219fb61f7a5e7593547673eb552e4c
+                checksum: chart-version=2.3.0_config-hash=476341204530b22f758db3b22b67250b0cd907b0b87da1bcadeb9351044e82e2
                 co.elastic.logs/json.add_error_key: "true"
                 co.elastic.logs/json.keys_under_root: "true"
                 co.elastic.logs/json.overwrite_keys: "true"

@@ -14,9 +14,8 @@ tag:
 imagePullPolicy:
 
 # Annotations to put on the CronJob:
-cronJobAnnotations:
-  # dsb-norge org. in Snyk
-  orgs.k8s.snyk.io/v1: 3c6b0e2e-36a2-4c0e-93c8-3ba8c87dd75d
+# deploymentAnnotations:
+#  custom-key: "custom value"
 
 # Default Spring Profile:
 springProfiles: "kubernetes"

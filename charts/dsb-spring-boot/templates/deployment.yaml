@@ -88,7 +88,7 @@ spec:
               path: /actuator/health/readiness
               port: {{ .Values.application_actuator_port }}
             initialDelaySeconds: 10
-            periodSeconds: {{.Values.readiness_period_seconds }}
+            periodSeconds: {{ .Values.readiness_period_seconds }}
             failureThreshold: {{ .Values.readiness_failure_threshold }}
           resources:
             requests:
@@ -103,7 +103,11 @@ spec:
             - name: LANG
               value: {{ .Values.lang | quote }}
             {{- if (not (eq (toString .Values.prometheus_enabled) "false")) }}
+            # Spring Boot 3.4.x
             - name: MANAGEMENT_METRICS_EXPORT_PROMETHEUS_ENABLED
+              value: {{ .Values.prometheus_enabled | quote }}
+            # Spring boot 3.5.x and later
+            - name: MANAGEMENT_PROMETHEUS_METRICS_EXPORT_ENABLED
               value: {{ .Values.prometheus_enabled | quote }}
             {{- end }}
             {{- if .Values.websocket.enabled }}

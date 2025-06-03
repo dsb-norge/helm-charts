@@ -47,7 +47,7 @@ helm upgrade --install --debug --dry-run -f example.yaml test-application dsb-sp
 The file `example.yaml` could be like this:
 
 ```yaml
-    ---
+    # ---
     replicas: 2
 
     image: "dsbacr.azurecr.io/dsb-norge/test-application"
@@ -72,7 +72,7 @@ Define a `jobs` entry like below:
       tokenURL: "https://devinternlogin.dsb.no/auth/realms/AD/protocol/openid-connect/token"
       apiPath: "/ping"
       method: "GET"
-c
+```
 
 Required parameters:
 

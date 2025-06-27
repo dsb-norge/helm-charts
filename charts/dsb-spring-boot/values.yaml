@@ -241,4 +241,14 @@ shutdown:
   timeoutPerShutdownPhase: 30s
   # This value is passed to kubernetes, it should be above the timeoutPerShutdownPhase to allow spring to do the shutdown before kubernetes forces it
   terminationGracePeriodSeconds: 45
+
+cache:
+  enabled: false
+  image: "dsbacr.azurecr.io/cache/docker-io/library/redis"
+  tag: "alpine"
+  imagePullPolicy: "Always"
+  memory_request: "128Mi"
+  memory_limit: "512Mi"
+  cpu_request: "0.1"
+  cpu_limit: "0.5"
 ...

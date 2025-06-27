@@ -158,6 +158,17 @@ spec:
             - name: BPL_JVM_HEAD_ROOM
               value: {{ .Values.jvm_head_room | quote }}
             {{- end }}
+            {{- if .Values.cache.enabled }}
+            - name: SPRING_DATA_REDIS_HOST
+              value: "{{ .Release.Name }}-redis-svc"
+            - name: SPRING_DATA_REDIS_PORT
+              value: "6379"
+            - name: SPRING_DATA_REDIS_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Release.Name }}-redis-secret
+                  key: password
+            {{- end }}
           envFrom:
           {{- range .Values.secretRefs }}
             - secretRef:

@@ -6,6 +6,8 @@ tests:
       - podDisruptionBudget.yaml
       - service.yaml
       - serviceAccount.yaml
+      - redisDeployment.yaml
+      - redisSecret.yaml
     set:
       image: nginx
       tag: latest
@@ -53,6 +55,8 @@ tests:
       - mountedConfigMap.yaml
       - csi-secrets-store-azure.yaml
       - blobStorage.yaml
+      - redisDeployment.yaml
+      - redisSecret.yaml
     set:
       replicas: 3
       minAvailableReplicas: 1
@@ -97,6 +101,8 @@ tests:
         partOf: "Verification stuff"
         createdBy: "https://github.com/dsb-norge/helm-charts"
       websocket:
+        enabled: true
+      cache:
         enabled: true
       rbac:
         enabled: true

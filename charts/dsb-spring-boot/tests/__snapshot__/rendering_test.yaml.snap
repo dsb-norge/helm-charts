@@ -187,7 +187,7 @@ Full manifest should match snapshot:
       template:
         metadata:
           annotations:
-            checksum: chart-version=5.3.0_config-hash=3756cd5aeb6192665e37ed21ab130c7bff986ab9dd9c1611eda5fd1e06ba0ac2
+            checksum: chart-version=5.4.0_config-hash=2887636ca5b1d9b2e4b11aee452bdb9874308168fbac3fd1d8c2a1432a1f5e6a
           labels:
             app: RELEASE-NAME-db-app
         spec:
@@ -246,7 +246,7 @@ Full manifest should match snapshot:
         metadata:
           annotations:
             apparmor.security.beta.kubernetes.io/pod: runtime/default
-            checksum: chart-version=5.3.0_config-hash=4ce6ab6b7cda0a488e16a12a27913179c85ec01e8a09d21be7fab65b497162d0
+            checksum: chart-version=5.4.0_config-hash=c969336009420ad4698317a0c306e0130d9f3b270fddb96588223dfdd443d72c
             co.elastic.logs/json.add_error_key: "true"
             co.elastic.logs/json.keys_under_root: "true"
             co.elastic.logs/json.overwrite_keys: "true"
@@ -259,9 +259,9 @@ Full manifest should match snapshot:
             app.kubernetes.io/part-of: Verification stuff
             app.kubernetes.io/version: greatest
             azure.workload.identity/use: "true"
-            helm.sh/chart: dsb-spring-boot-5.3.0
+            helm.sh/chart: dsb-spring-boot-5.4.0
             helm.sh/chart-name: dsb-spring-boot
-            helm.sh/chart-version: 5.3.0
+            helm.sh/chart-version: 5.4.0
         spec:
           affinity:
             podAntiAffinity:
@@ -313,6 +313,15 @@ Full manifest should match snapshot:
                   value: -XX:MaxDirectMemorySize=256M -XX:MaxMetaspaceSize=128M
                 - name: BPL_JVM_HEAD_ROOM
                   value: "12.34"
+                - name: SPRING_DATA_REDIS_HOST
+                  value: RELEASE-NAME-redis-svc
+                - name: SPRING_DATA_REDIS_PORT
+                  value: "6379"
+                - name: SPRING_DATA_REDIS_PASSWORD
+                  valueFrom:
+                    secretKeyRef:
+                      key: password
+                      name: RELEASE-NAME-redis-secret
               envFrom:
                 - secretRef:
                     name: secret1
@@ -456,9 +465,9 @@ Full manifest should match snapshot:
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: Rendering test
         app.kubernetes.io/part-of: Verification stuff
-        helm.sh/chart: dsb-spring-boot-5.3.0
+        helm.sh/chart: dsb-spring-boot-5.4.0
         helm.sh/chart-name: dsb-spring-boot
-        helm.sh/chart-version: 5.3.0
+        helm.sh/chart-version: 5.4.0
       name: RELEASE-NAME
       namespace: NAMESPACE
     spec:
@@ -495,6 +504,102 @@ Full manifest should match snapshot:
         matchLabels:
           app: RELEASE-NAME-app
   18: |
+    apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+      name: RELEASE-NAME-redis
+      namespace: NAMESPACE
+    spec:
+      replicas: 1
+      selector:
+        matchLabels:
+          app: RELEASE-NAME-redis
+      template:
+        metadata:
+          annotations:
+            checksum: chart-version=5.4.0_config-hash=c969336009420ad4698317a0c306e0130d9f3b270fddb96588223dfdd443d72c
+          labels:
+            app: RELEASE-NAME-redis
+            app.kubernetes.io/component: redis-cache
+            app.kubernetes.io/managed-by: Helm
+            app.kubernetes.io/name: Rendering test-redis
+            app.kubernetes.io/part-of: Verification stuff
+        spec:
+          containers:
+            - env:
+                - name: REDIS_DISABLE_COMMANDS
+                  value: FLUSHDB,FLUSHALL
+                - name: REDIS_PASSWORD
+                  valueFrom:
+                    secretKeyRef:
+                      key: password
+                      name: RELEASE-NAME-redis-secret
+              image: dsbacr.azurecr.io/cache/docker-io/library/redis:alpine
+              imagePullPolicy: Always
+              livenessProbe:
+                exec:
+                  command:
+                    - sh
+                    - -c
+                    - redis-cli -a $REDIS_PASSWORD ping
+                initialDelaySeconds: 20
+                periodSeconds: 5
+                timeoutSeconds: 5
+              name: RELEASE-NAME-redis
+              ports:
+                - containerPort: 6379
+              readinessProbe:
+                exec:
+                  command:
+                    - sh
+                    - -c
+                    - redis-cli -a $REDIS_PASSWORD ping
+                initialDelaySeconds: 20
+                periodSeconds: 5
+                timeoutSeconds: 5
+              resources:
+                limits:
+                  cpu: 0.5
+                  memory: 512Mi
+                requests:
+                  cpu: 0.1
+                  memory: 128Mi
+          hostname: RELEASE-NAME-redis-svc
+          nodeSelector:
+            NodePool: workers
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+            privileged: false
+            readOnlyRootFilesystem: true
+            runAsGroup: 1000
+            runAsNonRoot: true
+            runAsUser: 1000
+  19: |
+    apiVersion: v1
+    kind: Service
+    metadata:
+      name: RELEASE-NAME-redis-svc
+      namespace: NAMESPACE
+    spec:
+      ports:
+        - port: 6379
+          protocol: TCP
+          targetPort: 6379
+      selector:
+        app: RELEASE-NAME-redis
+  20: |
+    apiVersion: v1
+    data:
+      password: U1BTbUVBeUQxQWRlSXB2Rw==
+    kind: Secret
+    metadata:
+      name: RELEASE-NAME-redis-secret
+      namespace: NAMESPACE
+    type: Opaque
+  21: |
     apiVersion: v1
     kind: Service
     metadata:
@@ -507,10 +612,10 @@ Full manifest should match snapshot:
         app.kubernetes.io/part-of: Verification stuff
         app.kubernetes.io/version: greatest
         chart-name: dsb-spring-boot
-        chart-version: 5.3.0
-        helm.sh/chart: dsb-spring-boot-5.3.0
+        chart-version: 5.4.0
+        helm.sh/chart: dsb-spring-boot-5.4.0
         helm.sh/chart-name: dsb-spring-boot
-        helm.sh/chart-version: 5.3.0
+        helm.sh/chart-version: 5.4.0
         management.port: "81"
         spring-boot: "true"
       name: RELEASE-NAME
@@ -525,7 +630,7 @@ Full manifest should match snapshot:
           port: 9091
       selector:
         app: RELEASE-NAME-app
-  19: |
+  22: |
     apiVersion: v1
     kind: ServiceAccount
     metadata:
@@ -535,7 +640,7 @@ Full manifest should match snapshot:
         app: RELEASE-NAME-app
       name: RELEASE-NAME-service-account
       namespace: NAMESPACE
-  20: |
+  23: |
     apiVersion: monitoring.coreos.com/v1
     kind: ServiceMonitor
     metadata:
@@ -570,7 +675,7 @@ Minimal manifest should match snapshot:
         metadata:
           annotations:
             apparmor.security.beta.kubernetes.io/pod: runtime/default
-            checksum: chart-version=5.3.0_config-hash=fe9c16925807dfd5aa61fcbba68a6b386475d5cb2f56fa47d417790d52e30f65
+            checksum: chart-version=5.4.0_config-hash=23e1e2af0196a76b25aee16833a64091604c18818f1b1d5c7428c3ba88b59288
             co.elastic.logs/json.add_error_key: "true"
             co.elastic.logs/json.keys_under_root: "true"
             co.elastic.logs/json.overwrite_keys: "true"
@@ -583,9 +688,9 @@ Minimal manifest should match snapshot:
             app.kubernetes.io/part-of: RELEASE-NAME
             app.kubernetes.io/version: latest
             azure.workload.identity/use: "false"
-            helm.sh/chart: dsb-spring-boot-5.3.0
+            helm.sh/chart: dsb-spring-boot-5.4.0
             helm.sh/chart-name: dsb-spring-boot
-            helm.sh/chart-version: 5.3.0
+            helm.sh/chart-version: 5.4.0
         spec:
           affinity:
             podAntiAffinity:
@@ -681,10 +786,10 @@ Minimal manifest should match snapshot:
         app.kubernetes.io/part-of: RELEASE-NAME
         app.kubernetes.io/version: latest
         chart-name: dsb-spring-boot
-        chart-version: 5.3.0
-        helm.sh/chart: dsb-spring-boot-5.3.0
+        chart-version: 5.4.0
+        helm.sh/chart: dsb-spring-boot-5.4.0
         helm.sh/chart-name: dsb-spring-boot
-        helm.sh/chart-version: 5.3.0
+        helm.sh/chart-version: 5.4.0
         management.port: "8180"
         spring-boot: "true"
       name: RELEASE-NAME

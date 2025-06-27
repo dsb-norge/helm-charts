@@ -1,0 +1,90 @@
+{{ if .Values.cache.enabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-redis
+  namespace: {{ .Release.Namespace }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: "{{ .Release.Name }}-redis"
+  template:
+    metadata:
+      labels:
+        app: "{{ .Release.Name }}-redis"
+        app.kubernetes.io/component: redis-cache
+        app.kubernetes.io/managed-by: Helm
+        app.kubernetes.io/name: {{ .Values.dashboard.name | default .Release.Name }}-redis
+        app.kubernetes.io/part-of: {{ .Values.dashboard.partOf | default .Release.Name }}
+      annotations:
+        # We change this annotation on change in chart or parameters, to force re-create of pods (to pick up config changes etc)
+        # We create a string based on the chart version, and the resolved configuration values.
+        # See https://helm.sh/docs/howto/charts_tips_and_tricks/#automatically-roll-deployments
+        checksum: "chart-version={{ .Chart.Version }}_config-hash={{ .Values | toString | sha256sum }}"
+    spec:
+      securityContext:
+        capabilities:
+          drop: [ ALL ]
+        privileged: false
+        allowPrivilegeEscalation: false
+        readOnlyRootFilesystem: true
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+      hostname: "{{ .Release.Name }}-redis-svc"
+      nodeSelector:
+        NodePool: workers
+      containers:
+        - name: "{{ .Release.Name }}-redis"
+          image: "{{ .Values.cache.image }}:{{ .Values.cache.tag }}"
+          imagePullPolicy: {{ .Values.cache.imagePullPolicy }}
+          livenessProbe:
+            exec:
+              command:
+                - sh
+                - -c
+                - "redis-cli -a $REDIS_PASSWORD ping"
+            initialDelaySeconds: 20
+            periodSeconds: 5
+            timeoutSeconds: 5
+          readinessProbe:
+            exec:
+              command:
+                - sh
+                - -c
+                - "redis-cli -a $REDIS_PASSWORD ping"
+            initialDelaySeconds: 20
+            periodSeconds: 5
+            timeoutSeconds: 5
+          resources:
+            requests:
+              memory: {{ .Values.cache.memory_request }}
+              cpu: {{ .Values.cache.cpu_request }}
+            limits:
+              memory: {{ .Values.cache.memory_limit }}
+              cpu: {{ .Values.cache.cpu_limit }}
+          env:
+            - name: REDIS_DISABLE_COMMANDS
+              value: "FLUSHDB,FLUSHALL"
+            - name: REDIS_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Release.Name }}-redis-secret
+                  key: password
+          ports:
+          - containerPort: 6379
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: "{{ .Release.Name }}-redis-svc"
+  namespace: {{ .Release.Namespace }}
+spec:
+  ports:
+    - protocol: TCP
+      port: 6379
+      targetPort: 6379
+  selector:
+    app: "{{ .Release.Name }}-redis"
+{{ end }}

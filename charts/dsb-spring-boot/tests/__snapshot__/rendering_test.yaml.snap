@@ -187,7 +187,7 @@ Full manifest should match snapshot:
       template:
         metadata:
           annotations:
-            checksum: chart-version=5.4.0_config-hash=2887636ca5b1d9b2e4b11aee452bdb9874308168fbac3fd1d8c2a1432a1f5e6a
+            checksum: chart-version=5.4.0_config-hash=4e4d9705cdef90b40f5af45b24ede70821e81b578432ddf78b5ec0b431376755
           labels:
             app: RELEASE-NAME-db-app
         spec:
@@ -246,7 +246,7 @@ Full manifest should match snapshot:
         metadata:
           annotations:
             apparmor.security.beta.kubernetes.io/pod: runtime/default
-            checksum: chart-version=5.4.0_config-hash=c969336009420ad4698317a0c306e0130d9f3b270fddb96588223dfdd443d72c
+            checksum: chart-version=5.4.0_config-hash=cd8049530c6ae32b34ed6fe2030873596714e05cc0c3138e10d07027316e9321
             co.elastic.logs/json.add_error_key: "true"
             co.elastic.logs/json.keys_under_root: "true"
             co.elastic.logs/json.overwrite_keys: "true"
@@ -517,7 +517,7 @@ Full manifest should match snapshot:
       template:
         metadata:
           annotations:
-            checksum: chart-version=5.4.0_config-hash=c969336009420ad4698317a0c306e0130d9f3b270fddb96588223dfdd443d72c
+            checksum: chart-version=5.4.0_config-hash=cd8049530c6ae32b34ed6fe2030873596714e05cc0c3138e10d07027316e9321
           labels:
             app: RELEASE-NAME-redis
             app.kubernetes.io/component: redis-cache
@@ -593,7 +593,7 @@ Full manifest should match snapshot:
   20: |
     apiVersion: v1
     data:
-      password: U1BTbUVBeUQxQWRlSXB2Rw==
+      password: Y2FjaGVQYXNzd29yZDEyMw==
     kind: Secret
     metadata:
       name: RELEASE-NAME-redis-secret

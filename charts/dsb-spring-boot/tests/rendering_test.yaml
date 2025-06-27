@@ -104,6 +104,7 @@ tests:
         enabled: true
       cache:
         enabled: true
+        password: "cachePassword123"
       rbac:
         enabled: true
         roles:

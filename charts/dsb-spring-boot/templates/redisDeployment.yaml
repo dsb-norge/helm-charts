@@ -23,15 +23,6 @@ spec:
         # See https://helm.sh/docs/howto/charts_tips_and_tricks/#automatically-roll-deployments
         checksum: "chart-version={{ .Chart.Version }}_config-hash={{ .Values | toString | sha256sum }}"
     spec:
-      securityContext:
-        capabilities:
-          drop: [ ALL ]
-        privileged: false
-        allowPrivilegeEscalation: false
-        readOnlyRootFilesystem: true
-        runAsNonRoot: true
-        runAsUser: 1000
-        runAsGroup: 1000
       hostname: "{{ .Release.Name }}-redis-svc"
       nodeSelector:
         NodePool: workers
@@ -57,6 +48,15 @@ spec:
             initialDelaySeconds: 20
             periodSeconds: 5
             timeoutSeconds: 5
+          securityContext:
+            capabilities:
+              drop: [ ALL ]
+            privileged: false
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            runAsNonRoot: true
+            runAsUser: 1000
+            runAsGroup: 1000
           resources:
             requests:
               memory: {{ .Values.cache.memory_request }}

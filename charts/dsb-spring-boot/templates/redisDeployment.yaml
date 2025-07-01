@@ -74,6 +74,16 @@ spec:
                   key: password
           ports:
           - containerPort: 6379
+          volumeMounts:
+            - name: redis-data
+              mountPath: /data
+            - name: tmp-dir
+              mountPath: /tmp
+      volumes:
+      - name: redis-data
+        emptyDir: {}
+      - name: tmp-dir
+        emptyDir: {}
 ---
 apiVersion: v1
 kind: Service

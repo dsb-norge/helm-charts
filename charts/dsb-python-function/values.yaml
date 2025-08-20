@@ -1,0 +1,70 @@
+---
+# Number of pods to create
+replicas: 1
+
+# For the pod disruption budget, default is (replicas - 1)
+minAvailableReplicas:
+
+# Set to false to avoid creating PodDisruptionBudget for pods
+createPodDisruptionBudget: "true"
+
+# Name used for Kubernetes resources; must be unique within a namespace
+resourceName: python-fn
+
+# Container image ref and tag
+image:
+# imagePullPolicy: IfNotPresent
+
+tag:
+
+# Optional annotations on Deployment
+# deploymentAnnotations:
+#   custom-key: "custom value"
+
+# Annotations to put on every pod. Set to null to remove defaults.
+podAnnotations:
+  apparmor.security.beta.kubernetes.io/pod: "runtime/default"
+
+# Environment config exposed via ConfigMap
+config: {}
+
+# Reference secrets mounted on the pod via envFrom
+secretRefs: []
+
+# Reference configMaps mounted on the pod via envFrom
+configMapRefs: []
+
+# Additional volumes and mounts
+extraVolumes: []
+extraVolumeMounts: []
+
+# Service/Ingress
+port: 8080
+health:
+  livenessPath: /healthz
+  readinessPath: /readyz
+ingress_host:
+ingress_path: /
+ingress:  # list of { host, path? }
+
+# Resources
+memory_request: "128Mi"
+memory_limit: "256Mi"
+cpu_request: "50m"
+cpu_limit: "200m"
+
+# Prometheus scraping disabled by default. If your app exposes metrics on the web port,
+# set this to "true" to create a ServiceMonitor targeting that port.
+prometheus_enabled: "false"
+
+# Dashboard labels (recommended)
+dashboard: {}
+
+# LANG env
+lang: "en_US.UTF-8"
+
+# Azure Workload Identity
+# If clientId is specified, workload identity will be enabled for the deployment
+# The specified clientId must be an existing managed identity in the Azure tenant
+azureWorkloadIdentity:
+  clientId: ""

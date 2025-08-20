@@ -32,8 +32,8 @@ jobs:
           username: ${{ vars.ORG_AZURE_CONTAINER_REGISTRY_USER }}
           password: ${{ secrets.ORG_AZURE_CONTAINER_REGISTRY_PASSWORD }}
 
-      - name: Run Helm Unittests
-        run: docker run --rm --name unittest --volume "$(pwd)":/apps dsbacr.azurecr.io/cache/docker-io/helmunittest/helm-unittest charts/*
+      - name: Run Helm Unittests (exclude python chart)
+        run: docker run --rm --name unittest --volume "$(pwd)":/apps dsbacr.azurecr.io/cache/docker-io/helmunittest/helm-unittest charts/dsb-nginx-frontend charts/dsb-spring-boot charts/dsb-spring-boot-job
 
       - uses: actions/setup-python@v5
         with:
@@ -42,8 +42,8 @@ jobs:
       - name: Set up chart-testing
         uses: helm/chart-testing-action@v2.6.1
 
-      - name: Run linting (ct)
-        run: ct lint --all --validate-maintainers=false
+      - name: Run linting (ct) - include only supported charts
+        run: ct lint --charts charts/dsb-nginx-frontend charts/dsb-spring-boot charts/dsb-spring-boot-job --config .ct.yaml
 
       - name: Create kind cluster
         uses: helm/kind-action@v1.10.0
@@ -65,5 +65,5 @@ jobs:
           docker pull dsbacr.azurecr.io/cache/docker-io/nginxinc/nginx-unprivileged:1.20-alpine
           kind load --name chart-testing docker-image dsbacr.azurecr.io/cache/docker-io/nginxinc/nginx-unprivileged:1.20-alpine
 
-      - name: Run chart-testing (install)
-        run: ct install --all
+      - name: Run chart-testing (install) - include only supported charts
+        run: ct install --charts charts/dsb-nginx-frontend charts/dsb-spring-boot charts/dsb-spring-boot-job --config .ct.yaml

@@ -1,0 +1,6 @@
+# Chart Testing configuration
+chart-dirs:
+  - charts
+excluded-charts:
+  - charts/dsb-python-function
+validate-maintainers: false

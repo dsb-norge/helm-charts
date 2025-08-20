@@ -1,0 +1,115 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.resourceName }}
+  namespace: {{ .Release.Namespace }}
+  {{- if .Values.deploymentAnnotations }}
+  annotations:
+    {{- range $key, $val := .Values.deploymentAnnotations }}
+    {{ $key }}: {{ $val | quote }}
+    {{- end }}
+  {{- end }}
+spec:
+  replicas: {{ .Values.replicas }}
+  selector:
+    matchLabels:
+      app: {{ .Values.resourceName }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.resourceName }}
+        app.kubernetes.io/name: {{ .Values.dashboard.name | default .Release.Name }}
+        app.kubernetes.io/version: {{ .Values.tag }}
+        app.kubernetes.io/component: {{ .Values.dashboard.component | default "Function" }}
+        app.kubernetes.io/part-of: {{ .Values.dashboard.partOf | default .Release.Name }}
+        app.kubernetes.io/managed-by: {{ .Release.Service }}
+        app.kubernetes.io/created-by: {{ .Values.dashboard.createdBy | default .Release.Service }}
+        helm.sh/chart-name: {{ .Chart.Name }}
+        helm.sh/chart-version: {{ .Chart.Version | replace "+" "_" }}
+        helm.sh/chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+        azure.workload.identity/use: {{ empty .Values.azureWorkloadIdentity.clientId | ternary "false" "true" | quote }}
+      annotations:
+        {{- $protectedAnnotations := dict "checksum" (print "chart-version=" .Chart.Version "_config-hash=" (.Values | toString | sha256sum) ) }}
+        {{- $podAnnotations := .Values.podAnnotations }}
+        {{- $merged := mustMergeOverwrite $podAnnotations $protectedAnnotations }}
+        {{- range $key, $val := $merged }}
+        {{- if $key | eq "checksum" }}
+        # checksum annotation (forces rollout on change)
+        {{- end }}
+        {{ $key }}: {{ $val | quote }}
+        {{- end }}
+    spec:
+      serviceAccountName: {{ .Values.resourceName }}-sa
+      nodeSelector:
+        NodePool: workers
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+              - key: "app"
+                operator: In
+                values:
+                - {{ .Values.resourceName }}
+            topologyKey: "kubernetes.io/hostname"
+      containers:
+        - name: {{ .Values.resourceName }}
+          image: "{{ .Values.image }}:{{ .Values.tag }}"
+          {{- if .Values.imagePullPolicy }}
+          imagePullPolicy: {{ .Values.imagePullPolicy }}
+          {{- end }}
+          livenessProbe:
+            httpGet:
+              path: {{ .Values.health.livenessPath | default "/healthz" }}
+              port: {{ .Values.port }}
+            initialDelaySeconds: 10
+          readinessProbe:
+            httpGet:
+              path: {{ .Values.health.readinessPath | default "/readyz" }}
+              port: {{ .Values.port }}
+            initialDelaySeconds: 5
+          resources:
+            requests:
+              memory: {{ .Values.memory_request }}
+              cpu: {{ .Values.cpu_request }}
+            limits:
+              memory: {{ .Values.memory_limit }}
+              cpu: {{ .Values.cpu_limit }}
+          env:
+            - name: LANG
+              value: {{ .Values.lang | quote }}
+          envFrom:
+          {{- range .Values.secretRefs }}
+            - secretRef:
+                name: {{ . | quote }}
+          {{- end }}
+          {{- range .Values.configMapRefs }}
+            - configMapRef:
+                name: {{ . | quote }}
+          {{- end }}
+          {{- if .Values.config }}
+            - configMapRef:
+                name: {{ .Values.resourceName }}
+          {{- end }}
+          ports:
+            - containerPort: {{ .Values.port }}
+              name: web
+          {{- if .Values.extraVolumeMounts }}
+          volumeMounts:
+          {{- toYaml .Values.extraVolumeMounts | nindent 12 }}
+          {{- end }}
+          securityContext:
+            capabilities:
+              drop: [ALL]
+            privileged: false
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            runAsNonRoot: true
+            runAsUser: 1000
+            runAsGroup: 1000
+{{- if .Values.extraVolumes }}
+      volumes:
+{{- toYaml .Values.extraVolumes | nindent 8 }}
+{{- end }}
+...

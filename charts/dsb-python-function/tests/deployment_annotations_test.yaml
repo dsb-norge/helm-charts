@@ -1,0 +1,14 @@
+---
+suite: test deployment annotations
+templates:
+  - deployment.yaml
+tests:
+  - it: should support custom deployment annotations
+    set:
+      deploymentAnnotations:
+        custom-key: custom value
+    asserts:
+      - equal:
+          path: metadata.annotations["custom-key"]
+          value: custom value
+...

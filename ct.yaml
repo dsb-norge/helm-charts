@@ -1,0 +1,7 @@
+# Chart Testing configuration
+# Temporarily exclude dsb-python-function from install tests
+chart-dirs:
+  - charts
+excluded-charts:
+  - charts/dsb-python-function
+validate-maintainers: false

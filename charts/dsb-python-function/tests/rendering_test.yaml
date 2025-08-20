@@ -1,0 +1,97 @@
+suite: test deployment
+tests:
+  - it: Minimal manifest should match snapshot
+    templates:
+      - deployment.yaml
+      - pod-disruption-budget.yaml
+      - service.yaml
+    set:
+      image: python
+      tag: latest
+    asserts:
+      - matchSnapshot: { }
+  - it: should render default with PodDisruptionBudget and should match snapshot
+    templates:
+      - pod-disruption-budget.yaml
+    asserts:
+      - matchSnapshot: { }
+      - isKind:
+          of: PodDisruptionBudget
+  - it: should be possible to render without PodDisruptionBudget
+    templates:
+      - pod-disruption-budget.yaml
+    set:
+      createPodDisruptionBudget: false
+    asserts:
+      - hasDocuments:
+          count: 0
+  - it: should not create PodDisruptionBudget when replicas is 0
+    templates:
+      - pod-disruption-budget.yaml
+    set:
+      replicas: 0
+    asserts:
+      - hasDocuments:
+          count: 0
+  - it: Full manifest should match snapshot
+    templates:
+      - config-map.yaml
+      - deployment.yaml
+      - ingress.yaml
+      - pod-disruption-budget.yaml
+      - service.yaml
+      - serviceMonitor.yaml
+    set:
+      replicas: 2
+      minAvailableReplicas: 1
+      image: dsb/py-fn
+      tag: 1.0.0
+      deploymentAnnotations:
+        key1: value1
+        key2: value2
+      resourceName: "pyfn1"
+      config:
+        SOME_URL: "https://www.dsb.no"
+        root:
+          key1: value1
+          key2: value2
+      secretRefs:
+        - secret1
+      configMapRefs:
+        - configMap1
+      extraVolumes:
+        - name: my-empty-dir
+          emptyDir: {}
+      extraVolumeMounts:
+        - name: my-empty-dir
+          mountPath: /work
+      ingress_host: example.com
+      ingress_path: /example
+      port: 8000
+      memory_request: "64Mi"
+      memory_limit: "128Mi"
+      cpu_request: "25m"
+      cpu_limit: "100m"
+      prometheus_enabled: "false"
+      lang: "en_GB.UTF-8"
+      dashboard:
+        name: "Rendering test"
+        component: "Function"
+        partOf: "Verification stuff"
+        createdBy: "https://github.com/dsb-norge/helm-charts"
+    asserts:
+      - matchSnapshot: { }
+  - it: Support multiple ingress hosts
+    templates:
+      - ingress.yaml
+      - service.yaml
+    set:
+     image: python
+     tag: latest
+     prometheus_enabled: false
+     ingress:
+        - host: example.com
+        - host: admin.example.com
+          path: /secret
+    asserts:
+      - matchSnapshot: { }

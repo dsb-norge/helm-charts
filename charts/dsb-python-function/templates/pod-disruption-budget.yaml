@@ -1,0 +1,11 @@
+{{- if and (not (eq (toString .Values.createPodDisruptionBudget) "false")) (gt (int .Values.replicas) 0) }}
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: "{{ .Values.resourceName }}"
+spec:
+  minAvailable: {{ default ( sub .Values.replicas 1 ) .Values.minAvailableReplicas }}
+  selector:
+    matchLabels:
+      app: {{ .Values.resourceName }}
+{{- end }}

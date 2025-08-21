@@ -27,7 +27,7 @@ Full manifest should match snapshot:
         metadata:
           annotations:
             apparmor.security.beta.kubernetes.io/pod: runtime/default
-            checksum: chart-version=0.1.0_config-hash=71e97e317fa75ec51f11dcfcd7f01f81da4ab68e828e265599b1d4dc2bd4a65b
+            checksum: chart-version=0.1.1_config-hash=71e97e317fa75ec51f11dcfcd7f01f81da4ab68e828e265599b1d4dc2bd4a65b
           labels:
             app: pyfn1
             app.kubernetes.io/component: Function
@@ -37,9 +37,9 @@ Full manifest should match snapshot:
             app.kubernetes.io/part-of: Verification stuff
             app.kubernetes.io/version: 1.0.0
             azure.workload.identity/use: "false"
-            helm.sh/chart: dsb-python-function-0.1.0
+            helm.sh/chart: dsb-python-function-0.1.1
             helm.sh/chart-name: dsb-python-function
-            helm.sh/chart-version: 0.1.0
+            helm.sh/chart-version: 0.1.1
         spec:
           affinity:
             podAntiAffinity:
@@ -113,9 +113,9 @@ Full manifest should match snapshot:
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: Rendering test
         app.kubernetes.io/part-of: Verification stuff
-        helm.sh/chart: dsb-python-function-0.1.0
+        helm.sh/chart: dsb-python-function-0.1.1
         helm.sh/chart-name: dsb-python-function
-        helm.sh/chart-version: 0.1.0
+        helm.sh/chart-version: 0.1.1
       name: pyfn1
       namespace: NAMESPACE
     spec:
@@ -153,10 +153,10 @@ Full manifest should match snapshot:
         app.kubernetes.io/part-of: Verification stuff
         app.kubernetes.io/version: 1.0.0
         chart-name: dsb-python-function
-        chart-version: 0.1.0
-        helm.sh/chart: dsb-python-function-0.1.0
+        chart-version: 0.1.1
+        helm.sh/chart: dsb-python-function-0.1.1
         helm.sh/chart-name: dsb-python-function
-        helm.sh/chart-version: 0.1.0
+        helm.sh/chart-version: 0.1.1
       name: pyfn1
       namespace: NAMESPACE
     spec:
@@ -181,7 +181,7 @@ Minimal manifest should match snapshot:
         metadata:
           annotations:
             apparmor.security.beta.kubernetes.io/pod: runtime/default
-            checksum: chart-version=0.1.0_config-hash=8a5c5199a12857d35d25c8338c86efcb3024d19849417d84dba5364dd748cdef
+            checksum: chart-version=0.1.1_config-hash=4db795980953be0264b99058ff3bc22a5443713d837d5d2d5c825e54741312d9
           labels:
             app: python-fn
             app.kubernetes.io/component: Function
@@ -191,9 +191,9 @@ Minimal manifest should match snapshot:
             app.kubernetes.io/part-of: RELEASE-NAME
             app.kubernetes.io/version: latest
             azure.workload.identity/use: "false"
-            helm.sh/chart: dsb-python-function-0.1.0
+            helm.sh/chart: dsb-python-function-0.1.1
             helm.sh/chart-name: dsb-python-function
-            helm.sh/chart-version: 0.1.0
+            helm.sh/chart-version: 0.1.1
         spec:
           affinity:
             podAntiAffinity:
@@ -268,10 +268,10 @@ Minimal manifest should match snapshot:
         app.kubernetes.io/part-of: RELEASE-NAME
         app.kubernetes.io/version: latest
         chart-name: dsb-python-function
-        chart-version: 0.1.0
-        helm.sh/chart: dsb-python-function-0.1.0
+        chart-version: 0.1.1
+        helm.sh/chart: dsb-python-function-0.1.1
         helm.sh/chart-name: dsb-python-function
-        helm.sh/chart-version: 0.1.0
+        helm.sh/chart-version: 0.1.1
       name: python-fn
       namespace: NAMESPACE
     spec:
@@ -291,9 +291,9 @@ Support multiple ingress hosts:
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: RELEASE-NAME
         app.kubernetes.io/part-of: RELEASE-NAME
-        helm.sh/chart: dsb-python-function-0.1.0
+        helm.sh/chart: dsb-python-function-0.1.1
         helm.sh/chart-name: dsb-python-function
-        helm.sh/chart-version: 0.1.0
+        helm.sh/chart-version: 0.1.1
       name: python-fn
       namespace: NAMESPACE
     spec:
@@ -331,10 +331,10 @@ Support multiple ingress hosts:
         app.kubernetes.io/part-of: RELEASE-NAME
         app.kubernetes.io/version: latest
         chart-name: dsb-python-function
-        chart-version: 0.1.0
-        helm.sh/chart: dsb-python-function-0.1.0
+        chart-version: 0.1.1
+        helm.sh/chart: dsb-python-function-0.1.1
         helm.sh/chart-name: dsb-python-function
-        helm.sh/chart-version: 0.1.0
+        helm.sh/chart-version: 0.1.1
       name: python-fn
       namespace: NAMESPACE
     spec:

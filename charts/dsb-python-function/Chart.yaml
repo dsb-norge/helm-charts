@@ -2,4 +2,4 @@ apiVersion: v2
 name: dsb-python-function
 description: A simple Helm chart for Python function/container workloads on Kubernetes
 type: application
-version: 0.1.0
+version: 0.1.1

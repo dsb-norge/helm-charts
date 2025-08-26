@@ -1,4 +1,4 @@
-name: 'Release the charts'
+name: "Release the charts"
 
 on:
   push:

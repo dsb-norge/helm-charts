@@ -41,8 +41,8 @@ extraVolumeMounts: []
 # Service/Ingress
 port: 8080
 health:
-  livenessPath: system/health
-  readinessPath: system/ready
+  livenessPath: /system/health
+  readinessPath: /system/ready
 ingress_host:
 ingress_path: /
 ingress:  # list of { host, path? }

@@ -15,5 +15,6 @@ spec:
       app: {{ .Values.resourceName }}-service
   endpoints:
     - port: web
+      path: {{ .Values.prometheus_metrics_endpoint | default "/metrics" }}
       interval: 30s
 {{- end }}

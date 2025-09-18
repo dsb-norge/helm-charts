@@ -363,6 +363,15 @@ entries:
     version: 1.0.0
   dsb-python-function:
   - apiVersion: v2
+    created: "2025-09-18T08:21:03.115760733Z"
+    description: A simple Helm chart for Python function/container workloads on Kubernetes
+    digest: 3e5209c25fa685e4d918676007aa92e02e80a82d0c7456cfe26886097c26a2f3
+    name: dsb-python-function
+    type: application
+    urls:
+    - https://github.com/dsb-norge/helm-charts/releases/download/dsb-python-function-0.1.3/dsb-python-function-0.1.3.tgz
+    version: 0.1.3
+  - apiVersion: v2
     created: "2025-09-17T08:49:25.901685409Z"
     description: A simple Helm chart for Python function/container workloads on Kubernetes
     digest: 99aeb0139aa6271c5ff68609d45e0a1722657bc3564d0ece8cd71a6ba7462ef1
@@ -1192,4 +1201,4 @@ entries:
     urls:
     - https://github.com/dsb-norge/spring-boot-chart/releases/download/dsb-spring-boot-job-1.0.0/dsb-spring-boot-job-1.0.0.tgz
     version: 1.0.0
-generated: "2025-09-17T08:49:25.904010445Z"
+generated: "2025-09-18T08:21:03.116457682Z"

@@ -56,6 +56,7 @@ cpu_limit: "200m"
 # Prometheus scraping disabled by default. If your app exposes metrics on the web port,
 # set this to "true" to create a ServiceMonitor targeting that port.
 prometheus_enabled: "false"
+prometheus_metrics_endpoint: /system/metrics
 
 # Dashboard labels (recommended)
 dashboard: {}

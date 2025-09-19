@@ -59,7 +59,9 @@ prometheus_enabled: "false"
 prometheus_metrics_endpoint: /system/metrics
 
 # Dashboard labels (recommended)
-dashboard: {}
+dashboard:
+  appInfoPath: "/system/app-info"
+  appInfoPort: "8080"
 
 # LANG env
 lang: "en_US.UTF-8"

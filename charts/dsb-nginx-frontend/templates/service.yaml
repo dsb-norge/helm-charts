@@ -16,6 +16,9 @@ metadata:
     helm.sh/chart-name: {{ .Chart.Name }}
     helm.sh/chart-version: {{ .Chart.Version | replace "+" "_" }}
     helm.sh/chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+  annotations:
+    dsb.app-info-path: {{ .Values.dashboard.appInfoPath | quote }}
+    dsb.app-info-port: {{ .Values.dashboard.appInfoPort | quote }}
 spec:
   ports:
     - name: web

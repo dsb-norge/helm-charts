@@ -39,6 +39,8 @@ spec:
         {{- end }}
         {{ $key }}: {{ $val | quote }}
         {{- end }}
+        dsb.app-info-path: {{ .Values.dashboard.appInfoPath | quote }}
+        dsb.app-info-port: {{ .Values.dashboard.appInfoPort | quote }}
     spec:
       serviceAccountName: {{ .Values.resourceName }}-sa
       nodeSelector:

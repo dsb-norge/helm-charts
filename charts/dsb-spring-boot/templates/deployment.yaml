@@ -30,6 +30,8 @@ spec:
         helm.sh/chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
         azure.workload.identity/use: {{ empty .Values.azureWorkloadIdentity.clientId | ternary "false" "true" | quote }}
       annotations:
+        dsb.app-info-path: {{ .Values.dashboard.appInfoPath | quote }}
+        dsb.app-info-port: {{ .Values.dashboard.appInfoPort | quote }}
         {{- /*
         protected pod annotations:
           checksum: Required for proper pod creation, see below

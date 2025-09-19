@@ -222,7 +222,9 @@ readiness_failure_threshold: 20
 #   name:       The name of the application - Example: mysql - Default: Release Name
 #   component:  The component within the architecture - Example: database - Default: API
 #   partOf:     The name of a higher level application this one is part of - Example: wordpress - Default Release Name
-dashboard: {}
+dashboard:
+  appInfoPath: "/actuator/appinfo"
+  appInfoPort: "8180"
 
 rbac:
   enabled: false

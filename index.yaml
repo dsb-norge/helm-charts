@@ -1031,6 +1031,15 @@ entries:
     version: 1.4.0
   dsb-spring-boot-job:
   - apiVersion: v2
+    created: "2025-10-06T07:50:19.241386381Z"
+    description: A Helm chart for Spring Boot applications jobs on Kubernetes
+    digest: d657e65e73a6931a26e45eb31503bd939bc7308e4430b707adf8b9158ac38515
+    name: dsb-spring-boot-job
+    type: application
+    urls:
+    - https://github.com/dsb-norge/helm-charts/releases/download/dsb-spring-boot-job-2.4.0/dsb-spring-boot-job-2.4.0.tgz
+    version: 2.4.0
+  - apiVersion: v2
     created: "2025-08-21T11:10:46.814233907Z"
     description: A Helm chart for Spring Boot applications jobs on Kubernetes
     digest: 61b2183b2f97267d60169f3a93434c8aac05ba75c487863ede657d566d3e0d59
@@ -1228,4 +1237,4 @@ entries:
     urls:
     - https://github.com/dsb-norge/spring-boot-chart/releases/download/dsb-spring-boot-job-1.0.0/dsb-spring-boot-job-1.0.0.tgz
     version: 1.0.0
-generated: "2025-09-19T13:04:41.900267135Z"
+generated: "2025-10-06T07:50:19.242599339Z"

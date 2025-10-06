@@ -3,6 +3,7 @@ tests:
   - it: Minimal manifest should match snapshot
     templates:
       - cronJob.yaml
+      - serviceAccount.yaml
     set:
       image: nginx
       tag: latest
@@ -17,6 +18,7 @@ tests:
       - databaseDeployment.yaml
       - databaseService.yaml
       - csi-secrets-store-azure.yaml
+      - serviceAccount.yaml
     set:
       replicas: 3
       minAvailableReplicas: 1
@@ -48,6 +50,8 @@ tests:
       cpu_request: "0.3"
       cpu_limit: "1"
       lang: "no_NO.UTF-8"
+      azureWorkloadIdentity:
+        clientId: "b2255c28-9e28-4641-a6bc-b63391d59143"
       database_container:
         enabled: true
         image: "test-db:v1"

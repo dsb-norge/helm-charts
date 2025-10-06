@@ -20,6 +20,12 @@ imagePullPolicy:
 # Default Spring Profile:
 springProfiles: "kubernetes"
 
+# default is to not use workload identity
+# if clientId is specified, workload identity will be enabled for the cron job
+# the specified clientId must be an existing managed identity in the Azure tenant
+azureWorkloadIdentity:
+  clientId: ""
+
 # Example:  */1 * * * *
 schedule:
 

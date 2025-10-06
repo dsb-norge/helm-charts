@@ -26,6 +26,7 @@ spec:
         metadata:
           labels:
             app: {{ .Release.Name }}-job
+            azure.workload.identity/use: {{ empty .Values.azureWorkloadIdentity.clientId | ternary "false" "true" | quote }}
           annotations:
             "apparmor.security.beta.kubernetes.io/pod": "runtime/default"
             # We change this annotation on change in chart or parameters, to force re-create of pods (to pick up config changes etc)
@@ -37,6 +38,7 @@ spec:
             co.elastic.logs/json.add_error_key: "true"
         spec:
           restartPolicy: OnFailure
+          serviceAccountName: {{ .Release.Name }}-service-account
           nodeSelector:
             NodePool: workers
           containers:

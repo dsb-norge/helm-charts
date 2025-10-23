@@ -187,7 +187,7 @@ Full manifest should match snapshot:
       template:
         metadata:
           annotations:
-            checksum: chart-version=5.4.4_config-hash=e4106870a13a9f2a775c8a8fbe3475ee10c8214a3be058436e6cadb3ca227259
+            checksum: chart-version=5.4.5_config-hash=8bf7b5214f7fdd48622b6be0e30a0ed78ff06d6464474a1e1cb6c403a8e9d057
           labels:
             app: RELEASE-NAME-db-app
         spec:
@@ -246,7 +246,7 @@ Full manifest should match snapshot:
         metadata:
           annotations:
             apparmor.security.beta.kubernetes.io/pod: runtime/default
-            checksum: chart-version=5.4.4_config-hash=48097ec21edc031c9577c6593dde8862fd53f717ad82550f64557f0e2a97e574
+            checksum: chart-version=5.4.5_config-hash=48097ec21edc031c9577c6593dde8862fd53f717ad82550f64557f0e2a97e574
             co.elastic.logs/json.add_error_key: "true"
             co.elastic.logs/json.keys_under_root: "true"
             co.elastic.logs/json.overwrite_keys: "true"
@@ -261,20 +261,22 @@ Full manifest should match snapshot:
             app.kubernetes.io/part-of: Verification stuff
             app.kubernetes.io/version: greatest
             azure.workload.identity/use: "true"
-            helm.sh/chart: dsb-spring-boot-5.4.4
+            helm.sh/chart: dsb-spring-boot-5.4.5
             helm.sh/chart-name: dsb-spring-boot
-            helm.sh/chart-version: 5.4.4
+            helm.sh/chart-version: 5.4.5
         spec:
           affinity:
             podAntiAffinity:
-              requiredDuringSchedulingIgnoredDuringExecution:
-                - labelSelector:
-                    matchExpressions:
-                      - key: app
-                        operator: In
-                        values:
-                          - RELEASE-NAME-app
-                  topologyKey: kubernetes.io/hostname
+              preferredDuringSchedulingIgnoredDuringExecution:
+                - podAffinityTerm:
+                    labelSelector:
+                      matchExpressions:
+                        - key: app
+                          operator: In
+                          values:
+                            - RELEASE-NAME-app
+                    topologyKey: kubernetes.io/hostname
+                  weight: 100
           containers:
             - env:
                 - name: SPRING_PROFILES_ACTIVE
@@ -467,9 +469,9 @@ Full manifest should match snapshot:
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: Rendering test
         app.kubernetes.io/part-of: Verification stuff
-        helm.sh/chart: dsb-spring-boot-5.4.4
+        helm.sh/chart: dsb-spring-boot-5.4.5
         helm.sh/chart-name: dsb-spring-boot
-        helm.sh/chart-version: 5.4.4
+        helm.sh/chart-version: 5.4.5
       name: RELEASE-NAME
       namespace: NAMESPACE
     spec:
@@ -519,7 +521,7 @@ Full manifest should match snapshot:
       template:
         metadata:
           annotations:
-            checksum: chart-version=5.4.4_config-hash=48097ec21edc031c9577c6593dde8862fd53f717ad82550f64557f0e2a97e574
+            checksum: chart-version=5.4.5_config-hash=48097ec21edc031c9577c6593dde8862fd53f717ad82550f64557f0e2a97e574
           labels:
             app: RELEASE-NAME-redis
             app.kubernetes.io/component: redis-cache
@@ -627,10 +629,10 @@ Full manifest should match snapshot:
         app.kubernetes.io/part-of: Verification stuff
         app.kubernetes.io/version: greatest
         chart-name: dsb-spring-boot
-        chart-version: 5.4.4
-        helm.sh/chart: dsb-spring-boot-5.4.4
+        chart-version: 5.4.5
+        helm.sh/chart: dsb-spring-boot-5.4.5
         helm.sh/chart-name: dsb-spring-boot
-        helm.sh/chart-version: 5.4.4
+        helm.sh/chart-version: 5.4.5
         management.port: "81"
         spring-boot: "true"
       name: RELEASE-NAME
@@ -690,7 +692,7 @@ Minimal manifest should match snapshot:
         metadata:
           annotations:
             apparmor.security.beta.kubernetes.io/pod: runtime/default
-            checksum: chart-version=5.4.4_config-hash=ac9ed7838d78db104d56f41194e0afb4fa225495a2ed658933c535d0ad224322
+            checksum: chart-version=5.4.5_config-hash=ac9ed7838d78db104d56f41194e0afb4fa225495a2ed658933c535d0ad224322
             co.elastic.logs/json.add_error_key: "true"
             co.elastic.logs/json.keys_under_root: "true"
             co.elastic.logs/json.overwrite_keys: "true"
@@ -705,20 +707,22 @@ Minimal manifest should match snapshot:
             app.kubernetes.io/part-of: RELEASE-NAME
             app.kubernetes.io/version: latest
             azure.workload.identity/use: "false"
-            helm.sh/chart: dsb-spring-boot-5.4.4
+            helm.sh/chart: dsb-spring-boot-5.4.5
             helm.sh/chart-name: dsb-spring-boot
-            helm.sh/chart-version: 5.4.4
+            helm.sh/chart-version: 5.4.5
         spec:
           affinity:
             podAntiAffinity:
-              requiredDuringSchedulingIgnoredDuringExecution:
-                - labelSelector:
-                    matchExpressions:
-                      - key: app
-                        operator: In
-                        values:
-                          - RELEASE-NAME-app
-                  topologyKey: kubernetes.io/hostname
+              preferredDuringSchedulingIgnoredDuringExecution:
+                - podAffinityTerm:
+                    labelSelector:
+                      matchExpressions:
+                        - key: app
+                          operator: In
+                          values:
+                            - RELEASE-NAME-app
+                    topologyKey: kubernetes.io/hostname
+                  weight: 100
           containers:
             - env:
                 - name: SPRING_PROFILES_ACTIVE
@@ -806,10 +810,10 @@ Minimal manifest should match snapshot:
         app.kubernetes.io/part-of: RELEASE-NAME
         app.kubernetes.io/version: latest
         chart-name: dsb-spring-boot
-        chart-version: 5.4.4
-        helm.sh/chart: dsb-spring-boot-5.4.4
+        chart-version: 5.4.5
+        helm.sh/chart: dsb-spring-boot-5.4.5
         helm.sh/chart-name: dsb-spring-boot
-        helm.sh/chart-version: 5.4.4
+        helm.sh/chart-version: 5.4.5
         management.port: "8180"
         spring-boot: "true"
       name: RELEASE-NAME

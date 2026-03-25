@@ -8,6 +8,9 @@ metadata:
     spring-boot: "true"
     chart-name: "{{ .Chart.Name }}"
     chart-version: "{{ .Chart.Version }}"
+    # Picked up by Spring Cloud Kubernetes to select the primary port for service discovery:
+    # https://docs.spring.io/spring-cloud-kubernetes/reference/discovery-client.html
+    primary-port-name: "web"
     # Picked up by Spring Boot Admin:
     # https://codecentric.github.io/spring-boot-admin/current/#_converting_serviceinstances
     management.port: "{{ .Values.application_actuator_port }}"

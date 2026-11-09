@@ -6,7 +6,7 @@ docker pull helmunittest/helm-unittest:4.2.1-1.1.2
 docker pull quay.io/helmpack/chart-testing:latest
 
 # Run Helm linting:
-docker run -it --rm --name ct --volume "$( pwd )":/data quay.io/helmpack/chart-testing:latest sh -c "ct lint --charts data/charts/dsb-nginx-frontend data/charts/dsb-spring-boot data/charts/dsb-spring-boot-job --debug --chart-dirs data/"
+docker run -it --rm --name ct --volume "$( pwd )":/data quay.io/helmpack/chart-testing:latest sh -c "ct lint --charts data/charts/dsb-nginx-frontend,data/charts/dsb-spring-boot,data/charts/dsb-spring-boot-job --debug --chart-dirs data/"
 
 # Run unit tests:
 docker run -it --rm --name unittest --volume "$(pwd)":/apps helmunittest/helm-unittest:4.2.1-1.1.2 charts/dsb-nginx-frontend charts/dsb-spring-boot charts/dsb-spring-boot-job
@@ -24,7 +24,7 @@ kind load docker-image dsbacr.azurecr.io/dsb-norge/test-application:latest
 kind load docker-image dsbacr.azurecr.io/dsb-norge/dsb-mssql-server:2019-latest
 
 # Run Helm tests:
-docker run -it --rm --name ct --volume "$( pwd )":/data quay.io/helmpack/chart-testing:latest sh -c "ct install --charts data/charts/dsb-nginx-frontend data/charts/dsb-spring-boot data/charts/dsb-spring-boot-job --debug --chart-dirs data/"
+docker run -it --rm --name ct --volume "$( pwd )":/data quay.io/helmpack/chart-testing:latest sh -c "ct install --charts data/charts/dsb-nginx-frontend,data/charts/dsb-spring-boot,data/charts/dsb-spring-boot-job --debug --chart-dirs data/"
 
 # Delete Kubernetes cluster:
 kind delete cluster

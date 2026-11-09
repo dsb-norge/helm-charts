@@ -62,6 +62,24 @@ config:
 # Read more https://docs.spring.io/spring-boot/docs/3.2.2/reference/html/features.html#features.external-config.files
 configurationConfigMap: ""
 
+# Spring configuration, as a normal yaml tree, written out as a Spring config file (default: not set)
+#
+# Supplying this value writes it to the ConfigMap '<release name>-spring-config', mounts that at
+# /spring-config/application.yaml and adds the file to the spring.config.additional-location environment
+# variable, after the location 'configurationConfigMap' adds where both are set. Spring lets a later location
+# override an earlier one, so these values win over those files and over application.yaml in the image.
+# Unlike 'config', which becomes one environment variable per value, the file keeps YAML's types: lists stay
+# lists, numbers and booleans keep theirs. Environment variables (from 'config', 'configMapRefs', 'secretRefs'
+# or Key Vault) still take precedence over the file for the same property.
+# Left out of the defaults on purpose: the pod's checksum annotation hashes .Values, and an app that doesn't
+# use this must render as before.
+# springConfig:
+#   my.feature:
+#     enabled: true
+#     retries: 3
+#     allowed-origins:
+#       - https://example.com
+
 # Reference secrets that are mounted on the pod:
 secretRefs: {}
 

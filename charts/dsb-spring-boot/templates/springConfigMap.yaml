@@ -1,0 +1,18 @@
+{{- /*
+'springConfig' written out as a Spring YAML file. The deployment mounts it at /spring-config and adds
+/spring-config/application.yaml to SPRING_CONFIG_ADDITIONAL_LOCATION. toYaml keeps the values' types,
+where 'config' turns each value into an environment variable's text.
+*/}}
+{{- if .Values.springConfig }}
+{{- if not (kindIs "map" .Values.springConfig) }}
+{{- fail (printf "springConfig must be a map of Spring properties, got a %s" (kindOf .Values.springConfig)) }}
+{{- end }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Release.Name }}-spring-config
+  namespace: {{ .Release.Namespace }}
+data:
+  application.yaml: |
+    {{- toYaml .Values.springConfig | nindent 4 }}
+{{- end }}

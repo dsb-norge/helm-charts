@@ -132,9 +132,20 @@ spec:
             - name: DATABASE_CONTAINER_DATABASE
               value: {{ .Values.database_container.database | quote }}
             {{- end }}
+            {{- /*
+            Spring reads these locations in order, and a later one overrides an earlier one:
+            the files from 'configurationConfigMap' first, then the file written from 'springConfig'.
+            */}}
+            {{- $springConfigLocations := list }}
             {{- if .Values.configurationConfigMap }}
+            {{- $springConfigLocations = append $springConfigLocations "/spring-configuration/" }}
+            {{- end }}
+            {{- if .Values.springConfig }}
+            {{- $springConfigLocations = append $springConfigLocations "/spring-config/application.yaml" }}
+            {{- end }}
+            {{- if $springConfigLocations }}
             - name: SPRING_CONFIG_ADDITIONAL_LOCATION
-              value: "/spring-configuration/"
+              value: {{ join "," $springConfigLocations | quote }}
             {{- end }}
             {{- if .Values.azurePersistentStorage.enabled }}
             - name: AZURE_PERSISTENT_STORAGE_MOUNT_PATH
@@ -219,6 +230,11 @@ spec:
               mountPath: /spring-configuration
               readOnly: true
           {{- end }}
+          {{- if .Values.springConfig }}
+            - name: spring-config
+              mountPath: /spring-config
+              readOnly: true
+          {{- end }}
           {{- /* volume mounts from dsb-azure-csi-key-vault-provider */ -}}
           {{- include "dackvp.render-kubernetes-volume-mounts" (list
             .Values.azureKeyVault.vaults
@@ -255,6 +271,11 @@ spec:
         - name: spring-configuration
           configMap:
             name: {{ .Values.configurationConfigMap }}
+      {{- end }}
+      {{- if .Values.springConfig }}
+        - name: spring-config
+          configMap:
+            name: {{ .Release.Name }}-spring-config
       {{- end }}
       {{- /* volumes from dsb-azure-csi-key-vault-provider */ -}}
       {{- include "dackvp.render-kubernetes-volumes" (list

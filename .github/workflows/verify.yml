@@ -40,7 +40,7 @@ jobs:
           az acr login --name dsbacr.azurecr.io
 
       - name: Run Helm Unittests (exclude python chart)
-        run: docker run --rm --name unittest --volume "$(pwd)":/apps dsbacr.azurecr.io/cache/docker-io/helmunittest/helm-unittest charts/dsb-nginx-frontend charts/dsb-spring-boot charts/dsb-spring-boot-job
+        run: docker run --rm --name unittest --volume "$(pwd)":/apps dsbacr.azurecr.io/cache/docker-io/helmunittest/helm-unittest:4.2.1-1.1.2 charts/dsb-nginx-frontend charts/dsb-spring-boot charts/dsb-spring-boot-job
 
       - uses: actions/setup-python@v5
         with:

@@ -6,7 +6,7 @@ on:
 jobs:
   build:
     name: Build and test
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04 # ubuntu-latest is 26.04 since 2026-10-19: no Python 3.9, and kind v0.22 fails to load the mssql image there
     permissions:
       id-token: write # required for Azure password-less auth
       contents: read # required for actions/checkout

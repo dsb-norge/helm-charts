@@ -23,16 +23,21 @@ docker run --pull always -it --rm --name unittest --volume "$(pwd)":"$(pwd)" --w
 
 ## Unit tests
 
+The helm-unittest image is pinned, here and in `.github/workflows/verify.yml`. The snapshots hold each chart's
+`checksum` pod annotation, a hash of `.Values`, and helm-unittest's plugin 1.2.x hashes the charts' empty defaults
+differently from 1.1.x, so the snapshots on `main` only pass with a 1.1.x image. Move the pin and regenerate every
+chart's snapshots in the same change.
+
 ### Run unit tests
 
 ```bash
-docker run --pull always -it --rm --name unittest --volume "$(pwd)":/apps dsbacr.azurecr.io/cache/docker-io/helmunittest/helm-unittest charts/*
+docker run --pull always -it --rm --name unittest --volume "$(pwd)":/apps dsbacr.azurecr.io/cache/docker-io/helmunittest/helm-unittest:4.2.1-1.1.2 charts/*
 ```
 
 ### Update the test snapshots
 
 ```bash
-docker run --user 1001:1001 --pull always -it --rm --name unittest --volume "$(pwd)":/apps dsbacr.azurecr.io/cache/docker-io/helmunittest/helm-unittest --update-snapshot charts/*
+docker run --user 1001:1001 --pull always -it --rm --name unittest --volume "$(pwd)":/apps dsbacr.azurecr.io/cache/docker-io/helmunittest/helm-unittest:4.2.1-1.1.2 --update-snapshot charts/*
 ```
 
 ### Debug errors like `error converting YAML to JSON: yaml: line X`

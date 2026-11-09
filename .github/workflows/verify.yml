@@ -50,7 +50,7 @@ jobs:
         uses: helm/chart-testing-action@v2.6.1
 
       - name: Run linting (ct) - include only supported charts
-        run: ct lint --charts charts/dsb-nginx-frontend charts/dsb-spring-boot charts/dsb-spring-boot-job --config .ct.yaml
+        run: ct lint --charts charts/dsb-nginx-frontend,charts/dsb-spring-boot,charts/dsb-spring-boot-job --config .ct.yaml
 
       - name: Create kind cluster
         uses: helm/kind-action@v1.10.0
@@ -73,4 +73,4 @@ jobs:
           kind load --name chart-testing docker-image dsbacr.azurecr.io/cache/docker-io/nginxinc/nginx-unprivileged:1.20-alpine
 
       - name: Run chart-testing (install) - include only supported charts
-        run: ct install --charts charts/dsb-nginx-frontend charts/dsb-spring-boot charts/dsb-spring-boot-job --config .ct.yaml
+        run: ct install --charts charts/dsb-nginx-frontend,charts/dsb-spring-boot,charts/dsb-spring-boot-job --config .ct.yaml

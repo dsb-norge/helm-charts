@@ -66,6 +66,30 @@ Mount an existing ConfigMap of Spring config files and set `SPRING_CONFIG_ADDITI
 configurationConfigMap: my-spring-config
 ```
 
+### Spring config written by the chart
+Give Spring configuration as a YAML tree under `springConfig`, and the chart writes it out as a Spring config file:
+
+```yaml
+springConfig:
+  my.feature:
+    enabled: true
+    retries: 3
+    allowed-origins:
+      - https://example.com
+```
+
+- The chart renders the ConfigMap `<release name>-spring-config`, mounts it at `/spring-config/application.yaml` and adds
+  that file to `SPRING_CONFIG_ADDITIONAL_LOCATION`. With `configurationConfigMap` set too, the variable reads
+  `/spring-configuration/,/spring-config/application.yaml`: Spring reads the locations in order and a later one overrides
+  an earlier one, so these values win over the ConfigMap's files (its profile-specific ones included) and over the
+  `application.yaml` in the image.
+- Unlike `config`, which becomes one environment variable per value, the file keeps YAML's types: lists stay lists,
+  numbers and booleans keep theirs. Quote a string that looks like a number or a boolean, as in any YAML.
+- Environment variables still take precedence over the file for the same property: those from `config`, `configMapRefs`,
+  `secretRefs` and Key Vault's `mountAsEnv`.
+- A change to `springConfig` restarts the pods, as any change to the values does (the `checksum` pod annotation).
+- Not set, or empty, the chart renders exactly as without it.
+
 ### Development database and cache
 
 ```yaml

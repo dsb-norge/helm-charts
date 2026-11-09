@@ -51,6 +51,16 @@ config:
       azure: https://tommytesterexternalid.ciamlogin.com/8d185478-fca9-4383-a90f-659b6284392a/discovery/v2.0/keys
       ServiceAccount: "https://www.dsb.no"
 
+# Written out by the chart as /spring-config/application.yaml and named in SPRING_CONFIG_ADDITIONAL_LOCATION:
+# the install fails if Spring can't find or parse the file. Spring ignores the properties themselves.
+springConfig:
+  dsb.chart-testing.spring-config:
+    enabled: true
+    retries: 3
+    items:
+      - first
+      - second
+
 rbac:
   enabled: true
   roles:

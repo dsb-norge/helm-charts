@@ -20,7 +20,7 @@ spec:
       labels:
         app: {{ .Release.Name }}-app
         app.kubernetes.io/name: {{ .Values.dashboard.name | default .Release.Name }}
-        app.kubernetes.io/version: {{ .Values.tag }}
+        app.kubernetes.io/version: {{ .Values.tag | quote }}
         app.kubernetes.io/component: {{ .Values.dashboard.component | default "API" }}
         app.kubernetes.io/part-of: {{ .Values.dashboard.partOf | default .Release.Name }}
         app.kubernetes.io/managed-by: {{ .Release.Service }}
@@ -70,7 +70,7 @@ spec:
       {{- end }}
       containers:
         - name: {{ .Release.Name }}-container
-          image: "{{ .Values.image }}:{{ .Values.tag }}"
+          image: {{ printf "%s:%s" .Values.image .Values.tag | quote }}
           {{- if .Values.imagePullPolicy }}
           imagePullPolicy: {{ .Values.imagePullPolicy }}
           {{- end }}

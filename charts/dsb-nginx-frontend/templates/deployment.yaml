@@ -20,7 +20,7 @@ spec:
       labels:
         app: {{ .Values.resourceName }}
         app.kubernetes.io/name: {{ .Values.dashboard.name | default .Release.Name }}
-        app.kubernetes.io/version: {{ .Values.tag }}
+        app.kubernetes.io/version: {{ .Values.tag | quote }}
         app.kubernetes.io/component: {{ .Values.dashboard.component | default "Frontend" }}
         app.kubernetes.io/part-of: {{ .Values.dashboard.partOf | default .Release.Name }}
         app.kubernetes.io/managed-by: {{ .Release.Service }}
@@ -67,7 +67,7 @@ spec:
                 topologyKey: "kubernetes.io/hostname"
       containers:
         - name: {{ .Values.resourceName }}
-          image: "{{ .Values.image }}:{{ .Values.tag }}"
+          image: {{ printf "%s:%s" .Values.image .Values.tag | quote }}
           livenessProbe:
             httpGet:
               path: /

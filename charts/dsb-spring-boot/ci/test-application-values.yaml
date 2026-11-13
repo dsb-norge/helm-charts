@@ -44,8 +44,15 @@ config:
     auth-config:
       authority: "https://tommytesterexternalid.ciamlogin.com/"
       clientId: example-application-frontend
+    # Required by the test application's backend at startup; nothing signs in during the install.
+    keycloak:
+      url: "https://local.dev.kc.dsb.no/auth"
+      realm: AD
+      client-id: example-application-frontend
   testapp:
     self-uri: "http://localhost:8080"
+    # Required by the test application's backend at startup; nothing is called during the install.
+    downstream-uri: "http://localhost:9091"
     svc-account-client-registration-id: "service-account-test-application"
     jwk-set-uri:
       azure: https://tommytesterexternalid.ciamlogin.com/8d185478-fca9-4383-a90f-659b6284392a/discovery/v2.0/keys

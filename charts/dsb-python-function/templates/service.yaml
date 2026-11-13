@@ -8,7 +8,7 @@ metadata:
     chart-version: "{{ .Chart.Version }}"
     app: "{{ .Values.resourceName }}-service"
     app.kubernetes.io/name: {{ .Values.dashboard.name | default .Release.Name }}
-    app.kubernetes.io/version: {{ .Values.tag }}
+    app.kubernetes.io/version: {{ .Values.tag | quote }}
     app.kubernetes.io/component: {{ .Values.dashboard.component | default "Function" }}
     app.kubernetes.io/part-of: {{ .Values.dashboard.partOf | default .Release.Name }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}

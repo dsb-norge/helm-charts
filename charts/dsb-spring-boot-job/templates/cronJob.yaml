@@ -42,7 +42,7 @@ spec:
           nodeSelector:
             NodePool: workers
           containers:
-            - image: "{{ .Values.image }}:{{ .Values.tag }}"
+            - image: {{ printf "%s:%s" .Values.image .Values.tag | quote }}
               {{- if .Values.imagePullPolicy }}
               imagePullPolicy: {{ .Values.imagePullPolicy }}
               {{- end }}
